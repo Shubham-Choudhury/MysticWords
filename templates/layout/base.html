@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Home{% endblock %}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="Free Website Template" name="keywords" />
+    <meta content="Free Website Template" name="description" />
+
+    <!-- Favicon -->
+    
+    <link rel="icon" href="{{ url_for('static', filename='img/profile.png') }}" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link
+      href="{{ url_for('static', filename='css/style.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+        <!-- SIDEBAR -->
+        {% include "components/sidebar.html" %}
+        <div class="content">
+            <!-- NAVBAR -->
+            {% include "components/navbar.html" %}
+            {% block main %} {% endblock %}
+            <!-- FOOTER -->
+            {% include "components/footer.html" %}
+        </div>
+    </div>
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="{{ url_for('static', filename='mail/jqBootstrapValidation.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='mail/contact.js') }}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

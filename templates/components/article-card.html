@@ -1,0 +1,45 @@
+<div class="row blog-item px-3 pb-5">
+    <div class="col-md-5">
+      <img
+        class="img-fluid mb-4 mb-md-0"
+        src="{{ url_for('uploaded_image', post_slug=article.slug, filename=article.images[0].filename) }}"
+        alt="Image"
+      />
+    </div>
+    <div class="col-md-7">
+      <h3 class="mt-md-4 px-md-3 mb-2 py-2 bg-white font-weight-bold">
+        {{ article.title }}
+      </h3>
+      <div class="d-flex mb-3">
+        <small class="mr-2 text-muted">
+          <i class="fas fa-user"></i>
+          <a
+            href="{{ url_for('author', username=article.author.username ) }}"
+            >{{ article.author.username }}</a
+          >
+        </small>
+        <small class="mr-2 text-muted">
+          <i class="fa fa-calendar-alt"></i> {{
+          article.date_posted.strftime('%d-%b-%Y') }}
+        </small>
+        <small class="mr-2 text-muted">
+          <i class="fa fa-folder"></i>
+          <a
+            href="{{ url_for('category', category_slug=article.category.slug ) }}"
+            >{{ article.category.title }}</a
+          >
+        </small>
+        <small class="mr-2 text-muted">
+          <i class="fa fa-comments"></i> 15 Comments
+          <!-- Replace with actual number of comments -->
+        </small>
+      </div>
+      <p>{{ article.content[:200] }}</p>
+
+      <a
+        class="btn btn-link p-0"
+        href="{{ url_for('article', article_slug=article.slug ) }}"
+        >Read More <i class="fa fa-angle-right"></i
+      ></a>
+    </div>
+  </div>

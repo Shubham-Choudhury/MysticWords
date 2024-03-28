@@ -1,0 +1,84 @@
+{% extends "layout/base.html" %}
+{% block title %} 
+{{ category.title }}
+{% endblock %}
+{% block main %} 
+<div class="container py-5 px-2 bg-primary">
+    <div class="row py-5 px-4">
+        <div class="col-sm-6 text-center text-md-left">
+            <h1 class="mb-3 mb-md-0 text-white text-uppercase font-weight-bold">{{ category.title }}</h1>
+        </div>
+        <div class="col-sm-6 text-center text-md-right">
+            <div class="d-inline-flex pt-2">
+                <h4 class="m-0 text-white"><a class="text-white" href="{{ url_for('index') }}">Home</a></h4>
+                <h4 class="m-0 text-white px-2">/</h4>
+                <h4 class="m-0 text-white"><a class="text-white" href="{{ url_for('categories') }}">Categories</a></h4>
+                <h4 class="m-0 text-white px-2">/</h4>
+                <h4 class="m-0 text-white">{{ category.title }}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blog List Start -->
+
+<div class="container bg-white pt-5">
+  {% if articles.total %}
+    {% for article in articles %}
+    <div class="row blog-item px-3 pb-5">
+      <div class="col-md-5">
+        <img class="img-fluid mb-4 mb-md-0" src="{{ url_for('uploaded_image', post_slug=article.slug, filename=article.images[0].filename) }}" alt="Image" />
+      </div>
+      <div class="col-md-7">
+        <h3 class="mt-md-4 px-md-3 mb-2 py-2 bg-white font-weight-bold">
+          {{ article.title }}
+        </h3>
+        <div class="d-flex mb-3">
+          <small class="mr-2 text-muted">
+            <i class="fa fa-calendar-alt"></i> {{ article.date_posted.strftime('%d-%b-%Y') }}
+          </small>
+          <small class="mr-2 text-muted">
+            <i class="fa fa-folder"></i> <a href="{{ url_for('category', category_slug=article.category.slug ) }}">{{ article.category.title }}</a>
+          </small>
+          <small class="mr-2 text-muted">
+            <i class="fa fa-comments"></i> 15 Comments <!-- Replace with actual number of comments -->
+          </small>
+        </div>
+        <p>
+          {{ article.content[:200] }}
+        </p>
+        
+        <a class="btn btn-link p-0" href="{{ url_for('article', article_slug=article.slug ) }}">Read More <i class="fa fa-angle-right"></i></a>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="text-center my-5">
+      <h2 class="py-5">No articles found</h2>
+    </div>
+    {% endif %}
+  </div>
+  <!-- Blog List End -->
+
+  <!-- Pagination -->
+<div class="container mt-5">
+    <ul class="pagination justify-content-center">
+      {% if articles.has_prev %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('category', category_slug=category.slug, page=articles.prev_num) }}">Previous</a></li>
+      {% endif %}
+      {% for num in articles.iter_pages() %}
+      {% if num %}
+      <li class="page-item {% if num == articles.page %}active{% endif %}">
+        <a class="page-link" href="{{ url_for('category', category_slug=category.slug, page=num) }}">{{ num }}</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">...</span></li>
+      {% endif %}
+      {% endfor %}
+      {% if articles.has_next %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('category', category_slug=category.slug, page=articles.next_num) }}">Next</a></li>
+      {% endif %}
+    </ul>
+  </div>
+  <!-- End Pagination -->
+{% endblock %}

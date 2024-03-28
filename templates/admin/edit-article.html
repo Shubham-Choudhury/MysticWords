@@ -1,0 +1,49 @@
+{% extends "layout/base.html" %}
+{% block title %} 
+Edit Article: {{ article.title }}
+{% endblock %}
+{% block main %} 
+<div class="container bg-white pt-5">
+    <div class="col-md-12 pb-5">
+        <div class="contact-form">
+            {% include "components/error-alert.html" %}
+            <form action="{{ url_for('edit-article', article_slug=article.slug ) }}" method="post" enctype="multipart/form-data">
+                <div class="control-group">
+                    <input value="{{ article.title }}" name="title" type="text" class="form-control" id="name" placeholder="Title" required="required" />
+                    <p class="help-block text-danger"></p>
+                </div>
+                <div class="control-group">
+                    <select name="category" class="form-control" id="category" required="required" >
+                        <option value="category-1" >Select Category</option>
+                        {% for category in categories %}
+                            <option value="{{ category.slug }}" {% if article.category.slug==category.slug %}selected{% endif %} >{{ category.title}}</option>
+                        {% endfor %}
+                        </select>
+                    <p class="help-block text-danger"></p> 
+                </div>
+                <div class="control-group">
+                    <label for="fileInput">Cover Image</label>
+                    <input name="images" type="file" class="form-control" id="fileInput" />
+                    <p class="help-block text-danger"></p>
+                </div>
+                <div class="control-group">
+                    <textarea name="content" class="form-control" rows="9" id="message" placeholder="Write Your Blog" required="required">{{ article.content }}</textarea>
+                    <p class="help-block text-danger"></p>
+                </div>
+                <div class="control-group">
+                    <select name="is_published" class="form-control" id="is_published" required="required" >
+                        <option value="2" >Select Status</option>
+                        <option value="1" {% if article.is_published %}selected{% endif %} >Publish</option>
+                        <option value="0" {% if not article.is_published %}selected{% endif %}>Draft</option>
+                        </select>
+                    <p class="help-block text-danger"></p> 
+                </div>
+                <div>
+                    <button class="btn btn-primary" type="submit">Publish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% with errors = get_flashed_messages(category_filter=["error"]) %} {% if errors
+%}
+<div class="alert alert-danger">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+    ×
+  </button>
+  {%- for msg in errors %}
+  <strong>{{ msg }}</strong>
+  {% endfor -%}
+</div>
+
+{% endif %} {% endwith %}

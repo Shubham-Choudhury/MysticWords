@@ -1,0 +1,48 @@
+{% extends "layout/base.html" %} {% block main %} 
+{% include "components/success-alert.html" %}
+
+<!-- CAROUSEL -->
+{#{% include "components/carousel.html" %}#}
+
+<!-- Blog List Start -->
+
+<div class="container bg-white pt-5">
+  {% if articles.total %}
+  {% for article in articles %}
+  {# ARTICLE CARD #}
+  {% include "components/article-card.html" %}
+  {% endfor %}
+  {% else %}
+    <div class="text-center my-5">
+      <h2 class="py-5">No articles found</h2>
+    </div>
+    {% endif %}
+</div>
+<!-- Blog List End -->
+
+
+<!-- Pagination -->
+<div class="container mt-5">
+  <ul class="pagination justify-content-center">
+    {% if articles.has_prev %}
+    <li class="page-item"><a class="page-link" href="{{ url_for('index', page=articles.prev_num) }}">Previous</a></li>
+    {% endif %}
+    {% for num in articles.iter_pages() %}
+    {% if num %}
+    <li class="page-item {% if num == articles.page %}active{% endif %}">
+      <a class="page-link" href="{{ url_for('index', page=num) }}">{{ num }}</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">...</span></li>
+    {% endif %}
+    {% endfor %}
+    {% if articles.has_next %}
+    <li class="page-item"><a class="page-link" href="{{ url_for('index', page=articles.next_num) }}">Next</a></li>
+    {% endif %}
+  </ul>
+</div>
+<!-- End Pagination -->
+
+{#{% include "components/subscribe.html" %}#}
+
+{% endblock %}

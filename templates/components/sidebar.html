@@ -1,0 +1,69 @@
+<div class="sidebar">
+  <div
+    class="sidebar-text d-flex flex-column h-100 justify-content-center text-center"
+  >
+    <img
+      class="mt-1 mx-auto d-block w-50 bg-light img-fluid rounded-circle mb-4 p-3"
+      src="{{ url_for('static', filename='img/profile.png') }}"
+      alt="Image"
+    />
+    <h2 class="font-weight-bold">FlaskBlog</h2>
+    <p class="mb-4">A Dynamic Blogging Platform</p>
+    {% if profile %} {% set author_url = url_for('author',
+    username=profile.author.username) %} {% else %} {% set author_url = "" %} {%
+    endif %} {% if (request.path == url_for('profile')) or (request.path ==
+    author_url) %}
+    <div>
+      <hr />
+      <img
+        class="mx-auto d-block w-25 bg-light img-fluid rounded-circle mb-4 p-3"
+        src="{{ url_for('static', filename='img/profile.png') }}"
+        alt="Image"
+      />
+      <h4 class="font-weight-bold">{{ profile.author.name }}</h4>
+      {% if profile.bio %}
+      <p class="mb-4">{{ profile.bio}}</p>
+      {% endif %}
+      <div class="d-flex justify-content-center mb-5">
+        {% if profile.twitter %}
+        <a class="btn btn-outline-primary mr-2" href="{{ profile.twitter}}"
+          ><i class="fab fa-twitter"></i
+        ></a>
+        {% endif %} {% if profile.facebook %}
+        <a class="btn btn-outline-primary mr-2" href="{{ profile.facebook}}"
+          ><i class="fab fa-facebook-f"></i
+        ></a>
+        {% endif %} {% if profile.linkedin %}
+        <a class="btn btn-outline-primary mr-2" href="{{ profile.linkedin}}"
+          ><i class="fab fa-linkedin-in"></i
+        ></a>
+        {% endif %} {% if profile.instagram %}
+        <a class="btn btn-outline-primary mr-2" href="{{ profile.instagram}}"
+          ><i class="fab fa-instagram"></i
+        ></a>
+        {% endif %} {% if profile.email %}
+        <a class="btn btn-outline-primary mr-2" href="mailto:{{ profile.email}}"
+          ><i class="fas fa-envelope"></i
+        ></a>
+        {% endif %} {% if profile.other_link %}
+        <a class="btn btn-outline-primary mr-2" href="{{ profile.other_link}}"
+          ><i class="fas fa-link"></i
+        ></a>
+        {% endif %}
+      </div>
+      {% if request.path == url_for('profile') %}
+      <a
+        href="{{ url_for('edit-profile') }}"
+        class="btn btn-lg btn-block btn-primary mt-auto"
+        >Edit Profile</a
+      >
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  <div
+    class="sidebar-icon d-flex flex-column h-100 justify-content-center text-right"
+  >
+    <i class="fas fa-2x fa-angle-double-right text-primary"></i>
+  </div>
+</div>

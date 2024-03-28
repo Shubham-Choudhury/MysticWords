@@ -1,0 +1,38 @@
+{% extends "layout/base.html" %}
+{% block title %} 
+Categories
+{% endblock %}
+{% block main %} 
+<!-- Page Header Start -->
+<div class="container py-5 px-2 bg-primary">
+    <div class="row py-5 px-4">
+        <div class="col-sm-6 text-center text-md-left">
+            <h1 class="mb-3 mb-md-0 text-white text-uppercase font-weight-bold">Categories</h1>
+        </div>
+        <div class="col-sm-6 text-center text-md-right">
+            <div class="d-inline-flex pt-2">
+                <h4 class="m-0 text-white"><a class="text-white" href="{{ url_for('index') }}">Home</a></h4>
+                <h4 class="m-0 text-white px-2">/</h4>
+                <h4 class="m-0 text-white">Categories</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Categories -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="categories">
+                <div class="row">
+                    {% for category in categories %}
+                    <div class="col-xs-6 col-sm-4 col-md-3">
+                        <h3 class="text-center"><a class="d-block btn {{ loop.cycle('btn-primary text-white', 'bg-success text-white', 'bg-danger text-white','bg-info text-dark', 'bg-warning text-dark') }}" href="{{ url_for('category', category_slug=category.slug) }}">{{ category.title }}</a></h3>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
