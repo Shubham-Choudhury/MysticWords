@@ -1,5 +1,6 @@
 import os
 import re
+import json
 from datetime import datetime
 from flask import (
     Flask,
@@ -22,6 +23,7 @@ from flask_login import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Change this to your secret key
@@ -146,8 +148,19 @@ class ArticleImages(db.Model):
         return f"<ArticleImages {self.filename}>"
 
 
-def FetchCategories():
-    return Category.query.all()
+def read_config():
+    try:
+        with open("config.json") as f:
+            config = json.load(f)
+            return config
+    except FileNotFoundError:
+        print("Config file not found.")
+        return {}
+        # Handle this case, perhaps by creating a default configuration
+    except json.decoder.JSONDecodeError:
+        print("Error decoding JSON in config file.")
+        # Handle this case, perhaps by providing a default configuration or fixing the JSON file
+        return {}
 
 
 @app.route("/", methods=["GET"], endpoint="index")
@@ -158,21 +171,21 @@ def index():
         page=page, per_page=articles_per_page
     )
 
-    return render_template("index.html", articles=articles)
+    return render_template("index.html", details=read_config(), articles=articles)
 
 
 @app.route("/article/<article_slug>/", endpoint="article")
 def article(article_slug):
     article = Articles.query.filter_by(slug=article_slug).first_or_404()
-    return render_template(
-        "article.html", categories=FetchCategories(), article=article
-    )
+    return render_template("article.html", details=read_config(), article=article)
 
 
 @app.route("/categories", endpoint="categories")
 def categories():
     categories = Category.query.all()
-    return render_template("categories.html", categories=categories)
+    return render_template(
+        "categories.html", details=read_config(), categories=categories
+    )
 
 
 @app.route("/category/<category_slug>/", endpoint="category")
@@ -185,6 +198,7 @@ def category(category_slug):
     )
     return render_template(
         "category.html",
+        details=read_config(),
         category=category,
         articles=articles,
     )
@@ -199,17 +213,19 @@ def author(username):
     articles = Articles.query.filter_by(author=author, is_published=True).paginate(
         page=page, per_page=articles_per_page
     )
-    return render_template("author.html", profile=profile, articles=articles)
+    return render_template(
+        "author.html", details=read_config(), profile=profile, articles=articles
+    )
 
 
 @app.route("/about/", endpoint="about")
 def about():
-    return render_template("about.html")
+    return render_template("about.html", details=read_config())
 
 
 @app.route("/contact", endpoint="contact")
 def contact():
-    return render_template("contact.html")
+    return render_template("contact.html", details=read_config())
 
 
 @app.route("/<post_slug>/images/<filename>", methods=["GET"], endpoint="uploaded_image")
@@ -290,7 +306,7 @@ def signup():
             print(e)
             return redirect(url_for("signup"))
 
-    return render_template("admin/signup.html")
+    return render_template("admin/signup.html", details=read_config())
 
 
 @app.route("/signin", endpoint="signin", methods=["GET", "POST"])
@@ -325,7 +341,7 @@ def signin():
             flash("Something went wrong! Please try again.", "error")
             print(e)
             return redirect(url_for("signin"))
-    return render_template("admin/signin.html")
+    return render_template("admin/signin.html", details=read_config())
 
 
 @app.route("/profile/edit/", endpoint="edit-profile", methods=["GET", "POST"])
@@ -453,7 +469,9 @@ def edit_profile():
             flash("Something went wrong! Please try again.", "error")
             print(e)
             return redirect(url_for("edit-profile"))
-    return render_template("admin/edit-profile.html", profile=profile)
+    return render_template(
+        "admin/edit-profile.html", details=read_config(), profile=profile
+    )
 
 
 @app.route("/logout", endpoint="logout")
@@ -476,7 +494,9 @@ def author():
     articles = Articles.query.filter_by(author_id=current_user_id).paginate(
         page=page, per_page=articles_per_page
     )
-    return render_template("admin/profile.html", profile=profile, articles=articles)
+    return render_template(
+        "admin/profile.html", details=read_config(), profile=profile, articles=articles
+    )
 
 
 @app.route(
@@ -561,7 +581,9 @@ def create_article():
             print(e)
             return redirect(url_for("create-article"))
 
-    return render_template("admin/create-post.html", categories=categories)
+    return render_template(
+        "admin/create-post.html", details=read_config(), categories=categories
+    )
 
 
 @app.route(
@@ -599,8 +621,6 @@ def edit_article(article_slug):
 
             image_filenames = []
             if not (len(images) == 0 or images[0].filename == ""):
-                print(len(images))
-                print(images)
                 # Save the images and get their filenames
                 for i, image in enumerate(images, start=1):
                     if image.filename == "":
@@ -666,7 +686,10 @@ def edit_article(article_slug):
             print(e)
             return redirect(url_for("edit-article", article_slug=article.slug))
     return render_template(
-        "admin/edit-article.html", article=article, categories=categories
+        "admin/edit-article.html",
+        details=read_config(),
+        article=article,
+        categories=categories,
     )
 
 
@@ -741,7 +764,7 @@ def publish_article(article_slug):
 # ERRORS
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template("errors/404.html"), 404
+    return render_template("errors/404.html", details=read_config()), 404
 
 
 def create_categories():

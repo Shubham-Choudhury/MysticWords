@@ -1,2 +1,27 @@
+{% extends "layout/base.html" %}
+{% block title %}
+Not Found
+{% endblock  %}
+{% block main %} 
 
-404
+<div class="container" style="margin-top: 150px; margin-bottom:150px;">
+    <div class="row mt-5 pt-5">
+        <div class="col-md-12 text-center">
+            <h1>404</h1>
+            <h2>Page not found</h2>
+            <p>Sorry, the page you are looking for does not exist.</p>
+        </div>
+    </div>
+    
+    <!-- Back to home button -->
+    <div class="row mb-5 pb-5 text-center">
+        <div class="col-md-12">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

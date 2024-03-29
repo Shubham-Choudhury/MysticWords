@@ -2,13 +2,8 @@
   <div
     class="sidebar-text d-flex flex-column h-100 justify-content-center text-center"
   >
-    <img
-      class="mt-1 mx-auto d-block w-50 bg-light img-fluid rounded-circle mb-4 p-3"
-      src="{{ url_for('static', filename='img/profile.png') }}"
-      alt="Image"
-    />
-    <h2 class="font-weight-bold">FlaskBlog</h2>
-    <p class="mb-4">A Dynamic Blogging Platform</p>
+    <h2 class="font-weight-bold">{{ details.name }}</h2>
+    <p class="mb-4">{{ details.heading }}</p>
     {% if profile %} {% set author_url = url_for('author',
     username=profile.author.username) %} {% else %} {% set author_url = "" %} {%
     endif %} {% if (request.path == url_for('profile')) or (request.path ==

@@ -10,7 +10,7 @@
         </div>
         <div class="col-sm-6 text-center text-md-right">
             <div class="d-inline-flex pt-2">
-                <h4 class="m-0 text-white"><a class="text-white" href="">Home</a></h4>
+                <h4 class="m-0 text-white"><a class="text-white" href="{{ url_for('index' ) }}">Home</a></h4>
                 <h4 class="m-0 text-white px-2">/</h4>
                 <h4 class="m-0 text-white">Contact Me</h4>
             </div>
@@ -26,17 +26,17 @@
         <div class="col-sm-4 text-center mb-3">
             <i class="fa fa-2x fa-map-marker-alt mb-3 text-primary"></i>
             <h4 class="font-weight-bold">Address</h4>
-            <p>123 Street, New York, USA</p>
+            <p>{{ details.address }}</p>
         </div>
         <div class="col-sm-4 text-center mb-3">
             <i class="fa fa-2x fa-phone-alt mb-3 text-primary"></i>
             <h4 class="font-weight-bold">Phone</h4>
-            <p>+012 345 6789</p>
+            <p>{{ details.phone }}</p>
         </div>
         <div class="col-sm-4 text-center mb-3">
             <i class="far fa-2x fa-envelope mb-3 text-primary"></i>
             <h4 class="font-weight-bold">Email</h4>
-            <p>info@example.com</p>
+            <p>{{ details.email }}</p>
         </div>
     </div>
     <div class="col-md-12 pb-5">
